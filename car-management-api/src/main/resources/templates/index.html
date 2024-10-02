@@ -20,7 +20,7 @@
       <th>ID</th>
       <th>Brand</th>
       <th>Model</th>
-      <th width="250px">Action</th>
+      <th width="250px">Engine Type</th>
     </tr>
     </thead>
     <tbody>
@@ -29,9 +29,10 @@
       <td>{car.id}</td>
       <td>{car.brand}</td>
       <td>{car.model}</td>
+      <td id="engine_type">{car.engineType}</td>
       <td>
-        <a href="#"  class="btn btn-info">View</a>
-        <a href="#"  class="btn btn-primary">Edit</a>
+        <a href="http://localhost:8080/car/{car.id}/view" class="btn btn-info">View</a>
+        <a href="http://localhost:8080/car/{car.id}/edit"  class="btn btn-primary">Edit</a>
         <button type="button" class="btn btn-danger">Delete</button>
       </td>
     </tr>
@@ -41,4 +42,5 @@
 </div>
 
 </body>
+
 </html>

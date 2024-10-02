@@ -4,6 +4,7 @@ import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.json.bind.annotation.JsonbTransient;
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.UUID;
@@ -32,10 +33,34 @@ public class CarEntity extends PanacheEntityBase {
     @Column(name = "CREATED_BY", updatable = false)
     public String createdBy;
 
+    @Column(name = "SEATS")
+    public int seats;
+
+    @Column(name = "LICENSE_PLATES")
+    public String licensePlates;
+
+    @Column(name = "AUTONOMY")
+    public Long autonomy;
+
+    @Column(name = "COLOR")
+    public String color;
+
     public static Car toCar(CarEntity carEntity) {
         if (Objects.nonNull(carEntity)) {
             return new Car(carEntity.id, carEntity.brand, carEntity.model, carEntity.engineType);
         }
         return null;
+    }
+
+    public CarEntity(Car car)
+    {
+        this.brand = car.getBrand();
+        this.model = car.getModel();
+        this.engineType = car.getEngineType();
+        this.createdAt = LocalDateTime.now();
+
+    }
+
+    public CarEntity() {
     }
 }

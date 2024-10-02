@@ -7,4 +7,13 @@
 
     <include file="1.0.0/changelog.xml" relativeToChangelogFile="true"/>
 
+    <changeSet id="20231002-1" author="goncalo">
+        <!-- Add new columns to the Car table -->
+        <addColumn tableName="car">
+            <column name="SEATS" type="int"/>
+            <column name="LICENSE_PLATES" type="varchar(255)"/>
+            <column name="AUTONOMY" type="bigint"/>
+            <column name="COLOR" type="varchar(255)"/>
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>
