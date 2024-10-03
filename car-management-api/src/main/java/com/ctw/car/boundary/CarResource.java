@@ -46,6 +46,8 @@ public class CarResource {
     Template view;
     @Inject
     Template edit;
+    @Inject
+    Template booking;
 
     @GET
     @Produces({MediaType.APPLICATION_JSON, MediaType.TEXT_HTML})
@@ -130,6 +132,13 @@ public class CarResource {
 
         return Response.ok(content.render()).type(MediaType.TEXT_HTML_TYPE).build();
     }
+    @Path("/{id}/booking")
+    @GET
+    @Produces(MediaType.TEXT_HTML)
+    public Response showBooking(UUID id)
+    {
+
+    }
 
     @Path("/{id}/editSubmit")
     @POST
@@ -137,24 +146,75 @@ public class CarResource {
     @Produces(MediaType.TEXT_HTML)
     @Transactional
     public Response editCarSubmit(@PathParam("id") UUID id,
-                                  @FormParam("brand") String brand,
-                                  @FormParam("model") String model, 
-                                  @FormParam("engineType") EngineType engineTypeReceived,
-                                  @FormParam("seats") Integer seats,
+                                  @FormParam("brand") @DefaultValue("") String brand,
+                                  @FormParam("model") @DefaultValue("") String model,
+                                  @FormParam("engineType") @DefaultValue("") EngineType engineTypeReceived,
+                                  @FormParam("seats")  Integer seats,
                                   @FormParam("autonomy") Long autonomy,
-                                  @FormParam("licensePlate") String licensePlate,
-                                  @FormParam("color") String color)
+                                  @FormParam("licensePlate") @DefaultValue("") String licensePlate,
+                                  @FormParam("color") @DefaultValue("") String color)
     {
-        CarUpdateDTO carUpdateDTO = new CarUpdateDTO(model,brand,engineTypeReceived,seats,licensePlate,autonomy,color);
+        try {
+            CarUpdateDTO carUpdateDTO = new CarUpdateDTO(model,brand,engineTypeReceived,seats,licensePlate,autonomy,color);
+            return  sendUpdateCar(id, carUpdateDTO);
+
+        } catch (IllegalArgumentException e) {
+            System.out.println("\n\n\nIllegalArgumentException caught :"+e.getMessage()+"\n\n\n");
+            Car existingCar = carRepository.findCarbyId(id);
+            String updatedBrand = (brand != null && !brand.isEmpty()) ? brand : existingCar.getBrand();
+            String updatedModel = (model != null && !model.isEmpty()) ? model : existingCar.getModel();
+
+            EngineType updatedEngineType = existingCar.getEngineType();
+            if (engineTypeReceived != null && !engineTypeReceived.toString().isEmpty()) {
+                try {
+                    updatedEngineType = EngineType.valueOf(engineTypeReceived.toString().toUpperCase());
+                } catch (IllegalArgumentException e_engine) {
+                    return Response.status(Response.Status.BAD_REQUEST).entity("Invalid engine type").build();
+                }
+            }
+
+            Integer updatedSeats = existingCar.getSeats();
+            if (seats == null || seats == 0) {
+                try {
+                    updatedSeats = seats;
+                } catch (NumberFormatException e_seats) {
+                    return Response.status(Response.Status.BAD_REQUEST).entity("Invalid seats value").build();
+                }
+            }
+
+            Long updatedAutonomy = existingCar.getAutonomy();
+            if (autonomy != null || autonomy != 0L) {
+                try {
+                    updatedAutonomy = autonomy;
+                } catch (NumberFormatException e_autonomy) {
+                    return Response.status(Response.Status.BAD_REQUEST).entity("Invalid autonomy value").build();
+                }
+            }
+
+            String updatedLicensePlate = (licensePlate != null && !licensePlate.isEmpty()) ? licensePlate : existingCar.getLicensePlate();
+            String updatedColor = (color != null && !color.isEmpty()) ? color : existingCar.getColor();
+
+
+            CarUpdateDTO carUpdateDTO = new CarUpdateDTO(updatedModel,updatedBrand,updatedEngineType,updatedSeats,updatedLicensePlate,updatedAutonomy,updatedColor);
+
+            return  sendUpdateCar(id, carUpdateDTO);
+        }
+    }
+    private Response sendUpdateCar(UUID id, CarUpdateDTO carUpdateDTO)
+    {
+        System.out.println("\n\n\nid sent out to updateCar(): " + id + "\n\n\n");
         Car updatedCar = carRepository.updateCar(id, carUpdateDTO);
+
 
         if(updatedCar == null)
             return Response.status(Response.Status.NOT_FOUND).entity("Car to be edited not found").build();
 
+        System.out.println("\n\n\nEdit completed sucessfully, attempting construction of updated index page"+ "\n\n\n");
         List<Car> updatedCars = this.carService.getCars();
         TemplateInstance content = index.data("cars", updatedCars)
                 .data("message", "Car edited successfully");
 
         return Response.ok(content.render()).type(MediaType.TEXT_HTML_TYPE).build();
     }
+
 }

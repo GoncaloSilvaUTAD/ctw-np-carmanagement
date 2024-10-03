@@ -18,20 +18,17 @@
         <form action="/car/{car.id}/editSubmit"  method="post">
             <div  class="text-danger"></div>
             <div class="form-group">
-                <span>Current car Brand: {car.brand}</span>
-                <label  class="control-label">Brand</label>
+                <span><strong>Current car Brand: {car.brand}</strong></span>
                 <input name="brand" type="text" class="form-control"/>
                 <span class="text-danger"></span>
             </div>
             <div class="form-group">
-                <span>Current car Model: {car.model}</span>
-                <label class="control-label">Model</label>
+                <span><strong>Current car Model: {car.model}</strong></span>
                 <input name="model" type="text" class="form-control"/>
                 <span class="text-danger"></span>
             </div>
             <div class="form-group">
-                <span>Current car Engine Type: {car.engineType}</span>
-                <label class="control-label">Engine Type</label>
+                <span><strong>Current car Engine Type: {car.engineType}</strong></span>
                 <select name="engineType">
                     <option value="BEV">BEV</option>
                     <option value="DIESEL">Diesel</option>
@@ -41,26 +38,22 @@
                 <span class="text-danger"></span>
             </div>
             <div class="form-group">
-                <span>Current car seats: {car.seats}</span>
-                <label class="control-label">Seats</label>
-                <input name="seats" type="text" class="form-control"/>
+                <span><strong>Current car seats: {car.seats}</strong></span>
+                <input name="seats" type="number" class="form-control"/>
                 <span class="text-danger"></span>
             </div>
             <div class="form-group">
-                <span>Current car license plate: {car.licensePlate}</span>
-                <label class="control-label">License Plate:</label>
+                <span><strong> Current car license plate: {car.licensePlate} </strong></span>
                 <input name="licensePlate" type="text" class="form-control"/>
                 <span class="text-danger"></span>
             </div>
             <div class="form-group">
-                <span>Current car autonomy: {car.autonomy}</span>
-                <label class="control-label">Autonomy</label>
-                <input name="autonomy" type="text" class="form-control"/>
+                <span><strong> Current car autonomy: {car.autonomy} Km</strong></span>
+                <input name="autonomy" type="number" class="form-control"/>
                 <span class="text-danger"></span>
             </div>
             <div class="form-group">
-                <span>Current car color: {car.color}</span>
-                <label class="control-label">Color</label>
+                <span><strong> Current car color: {car.color}</strong></span>
                 <input name="color" type="text" class="form-control"/>
                 <span class="text-danger"></span>
             </div>
