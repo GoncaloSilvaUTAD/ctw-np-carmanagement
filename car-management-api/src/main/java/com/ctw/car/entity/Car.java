@@ -58,6 +58,17 @@ public class Car {
         this.color = color;
     }
 
+    public Car(UUID id, String model, String brand, EngineType engineType, int seats, String licensePlate, Long autonomy, String color) {
+        this.id = id;
+        this.model = model;
+        this.brand = brand;
+        this.engineType = engineType;
+        this.seats = seats;
+        this.licensePlate = licensePlate;
+        this.autonomy = autonomy;
+        this.color = color;
+    }
+
     public Car() {
 
     }

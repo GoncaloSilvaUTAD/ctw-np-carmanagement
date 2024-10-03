@@ -109,6 +109,7 @@ public class CarResource {
         TemplateInstance content = view.data("car", car);
         return Response.ok(content.render()).build();
     }
+    // partial edit: olds
     @Path("/{id}/edit")
     @GET
     @Produces(MediaType.TEXT_HTML)

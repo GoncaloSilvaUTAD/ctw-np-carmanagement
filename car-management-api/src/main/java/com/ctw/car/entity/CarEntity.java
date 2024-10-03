@@ -47,7 +47,7 @@ public class CarEntity extends PanacheEntityBase {
 
     public static Car toCar(CarEntity carEntity) {
         if (Objects.nonNull(carEntity)) {
-            return new Car(carEntity.id, carEntity.brand, carEntity.model, carEntity.engineType);
+            return new Car(carEntity.id, carEntity.brand, carEntity.model, carEntity.engineType,carEntity.seats,carEntity.licensePlates,carEntity.autonomy,carEntity.color);
         }
         return null;
     }
