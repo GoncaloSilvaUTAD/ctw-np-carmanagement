@@ -106,7 +106,6 @@ public class CarResource {
         Car car = carRepository.findCarbyId(id);
         if(car == null)
             return Response.status(Response.Status.NOT_FOUND).entity("Car not found").build();
-        carRepository.checkCar(car);
         TemplateInstance content = view.data("car", car);
         return Response.ok(content.render()).build();
     }
@@ -116,7 +115,6 @@ public class CarResource {
     public Response editCar(@PathParam("id") UUID id)
     {
         Car car = carRepository.findCarbyId(id);
-        carRepository.checkCar(car);
         TemplateInstance content = edit.data("car", car);
         return Response.ok(content.render()).build();
     }
@@ -137,7 +135,11 @@ public class CarResource {
     @Produces(MediaType.TEXT_HTML)
     public Response showBooking(UUID id)
     {
-
+        Car car = carRepository.findCarbyId(id);
+        if(car == null)
+            return Response.status(Response.Status.NOT_FOUND).entity("Car not found").build();
+        TemplateInstance content = booking.data("car", car);
+        return Response.ok(content.render()).build();
     }
 
     @Path("/{id}/editSubmit")

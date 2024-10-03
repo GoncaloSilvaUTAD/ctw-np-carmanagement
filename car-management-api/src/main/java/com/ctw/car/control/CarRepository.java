@@ -75,7 +75,7 @@ public class CarRepository implements PanacheRepository<CarEntity> {
             if(carUpdateDTO.seats != 0)
                 newCar.setSeats(carUpdateDTO.seats);
 
-            deleteCarByID(oldCar.getId());
+            deleteCarByID(id);
             addCar(newCar);
         }
 
