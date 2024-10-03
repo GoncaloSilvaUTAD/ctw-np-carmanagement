@@ -4,7 +4,10 @@ import com.ctw.car.entity.Car;
 import com.ctw.car.entity.CarEntity;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import jakarta.enterprise.context.Dependent;
+import jakarta.inject.Inject;
+import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
+import org.hibernate.Session;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -14,6 +17,10 @@ import java.util.stream.Collectors;
 
 @Dependent
 public class CarRepository implements PanacheRepository<CarEntity> {
+
+    @Inject
+    EntityManager em;
+
     public List<Car> fetchAllCars() {
         return listAll()
                 .stream()
@@ -36,33 +43,43 @@ public class CarRepository implements PanacheRepository<CarEntity> {
         }
         return null;
     }
+    @Transactional
+    public void deleteCarByID(UUID id)
+    {
+        CarEntity entity =em.find(CarEntity.class,id);
+        if (entity != null) {
+            em.remove(entity);
+        }
+    }
 
     public Car updateCar(UUID id, CarUpdateDTO carUpdateDTO)
     {
-        Car car = findCarbyId(id);
-        if(car == null)
+        Car oldCar = findCarbyId(id);
+        Car newCar = new Car();
+        if(oldCar == null)
             return null;
         else
         {
             if(carUpdateDTO.brand != null)
-                car.setBrand(carUpdateDTO.brand);
+                newCar.setBrand(carUpdateDTO.brand);
             if(carUpdateDTO.model != null)
-                car.setModel(carUpdateDTO.model);
+                newCar.setModel(carUpdateDTO.model);
             if(carUpdateDTO.color != null)
-                car.setColor(carUpdateDTO.color);
+                newCar.setColor(carUpdateDTO.color);
             if(carUpdateDTO.engineType != null)
-                car.setEngineType(carUpdateDTO.engineType);
+                newCar.setEngineType(carUpdateDTO.engineType);
             if (carUpdateDTO.autonomy == 0L)
-                car.setAutonomy(carUpdateDTO.autonomy);
+                newCar.setAutonomy(carUpdateDTO.autonomy);
             if(carUpdateDTO.licensePlate != null)
-                car.setLicensePlate(carUpdateDTO.licensePlate);
+                newCar.setLicensePlate(carUpdateDTO.licensePlate);
             if(carUpdateDTO.seats != 0)
-                car.setSeats(carUpdateDTO.seats);
+                newCar.setSeats(carUpdateDTO.seats);
 
-            addCar(car);
+            deleteCarByID(oldCar.getId());
+            addCar(newCar);
         }
 
-        return car;
+        return newCar;
     }
     
     public void checkCar(Car car)

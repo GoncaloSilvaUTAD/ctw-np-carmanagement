@@ -42,7 +42,8 @@ quarkus:
       access-control-max-age: 24H
       headers: accept, authorization, content-type, x-requested-with
       methods: GET, POST, PUT, OPTIONS
-
+  qute:
+    suffixes: html
 "%prod":
   quarkus:
     liquibase:
@@ -63,3 +64,5 @@ quarkus:
         access-control-allow-credentials: true
         headers: accept, authorization, content-type, x-requested-with
         methods: GET, POST, PUT, OPTIONS
+    qute:
+      suffixes: html

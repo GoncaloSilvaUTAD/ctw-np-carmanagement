@@ -118,7 +118,19 @@ public class CarResource {
         TemplateInstance content = edit.data("car", car);
         return Response.ok(content.render()).build();
     }
-    
+
+    @Path("/{id}/delete")
+    @GET
+    public Response deleteCar(UUID id)
+    {
+        carRepository.deleteCarByID(id);
+        List<Car> updatedCars = this.carService.getCars();
+        TemplateInstance content = index.data("cars", updatedCars)
+                .data("message", "Car deleted successfully");
+
+        return Response.ok(content.render()).type(MediaType.TEXT_HTML_TYPE).build();
+    }
+
     @Path("/{id}/editSubmit")
     @POST
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)

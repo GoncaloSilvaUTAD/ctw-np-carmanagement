@@ -58,6 +58,11 @@ public class CarEntity extends PanacheEntityBase {
         this.model = car.getModel();
         this.engineType = car.getEngineType();
         this.createdAt = LocalDateTime.now();
+        this.seats = car.getSeats();
+        this.autonomy = car.getAutonomy();
+        this.color = car.getColor();
+        this.licensePlates = car.getLicensePlate();
+
 
     }
 
