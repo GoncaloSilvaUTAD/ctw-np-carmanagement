@@ -109,7 +109,7 @@ public class CarResource {
         TemplateInstance content = view.data("car", car);
         return Response.ok(content.render()).build();
     }
-    // partial edit: olds
+
     @Path("/{id}/edit")
     @GET
     @Produces(MediaType.TEXT_HTML)
@@ -213,11 +213,23 @@ public class CarResource {
             return Response.status(Response.Status.NOT_FOUND).entity("Car to be edited not found").build();
 
         System.out.println("\n\n\nEdit completed sucessfully, attempting construction of updated index page"+ "\n\n\n");
-        List<Car> updatedCars = this.carService.getCars();
+        List<Car> updatedCars = carService.getCars();
         TemplateInstance content = index.data("cars", updatedCars)
                 .data("message", "Car edited successfully");
 
         return Response.ok(content.render()).type(MediaType.TEXT_HTML_TYPE).build();
     }
-
+//    @Path("/{id}/editSubmit")
+//    @POST
+//    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+//    @Produces(MediaType.TEXT_HTML)
+//    @Transactional
+//    public Response editCarSubmitPartial(@PathParam("id") UUID id,
+//                                  @FormParam("brand") @DefaultValue("") String brand,
+//                                  @FormParam("model") @DefaultValue("") String model,
+//                                  @FormParam("engineType") @DefaultValue("") EngineType engineTypeReceived)
+//    {
+//        CarUpdateDTO carUpdateDTO = new CarUpdateDTO(model,brand,engineTypeReceived);
+//        return  sendUpdateCar(id, carUpdateDTO);
+//    }
 }

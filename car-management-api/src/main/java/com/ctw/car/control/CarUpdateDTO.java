@@ -27,6 +27,12 @@ public class CarUpdateDTO {
         checkCar(this);
     }
 
+    public CarUpdateDTO(String model, String brand, EngineType engineType) {
+        this.model = model;
+        this.brand = brand;
+        this.engineType = engineType;
+    }
+
     private void checkCar(CarUpdateDTO carUpdateDTO)
     {
 
